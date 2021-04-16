@@ -1,7 +1,7 @@
 # библиотеки
 import turtle
 import time
-import random
+from random import randint
 
 #--------------------------экран---------------------------------
 screen = turtle.Screen()
@@ -18,11 +18,24 @@ snake = []
 snake_segment = turtle.Turtle()
 # меняет форму 
 snake_segment.shape('square')
+snake_segment.penup()
 snake.append(snake_segment)
 #--------------------------змейка--------------------------------
 
+#--------------------------еда-----------------------------------
+food = turtle.Turtle()
+food.shape('turtle')
+food.penup()
+# цвет еды
+food.color('#000000')
+food.goto(randint(-300, 300), randint(-300, 300))
+#--------------------------еда-----------------------------------
+
 #--------------------------управление----------------------------
 screen.onkeypress(lambda: snake[0].setheading(90), 'Up')
+screen.onkeypress(lambda: snake[0].setheading(270), 'Down')
+screen.onkeypress(lambda: snake[0].setheading(180), 'Left')
+screen.onkeypress(lambda: snake[0].setheading(0), 'Right')
 screen.listen()
 #--------------------------управление----------------------------
 
