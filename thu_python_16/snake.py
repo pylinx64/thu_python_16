@@ -11,10 +11,13 @@ screen.bgcolor('#06FFD1')
 screen.setup(650, 650)
 # название игры 
 screen.title('Змейка в соусе версия 123')
+# убирает задержки
+screen.tracer(0)
 #--------------------------экран---------------------------------
 
 #--------------------------змейка--------------------------------
 snake = []
+# голова
 snake_segment = turtle.Turtle()
 # меняет форму 
 snake_segment.shape('square')
@@ -41,11 +44,27 @@ screen.listen()
 
 #--------------------------игра----------------------------------
 while True:
+    # проверка сьела ли змея еду
+    if snake[0].distance(food) < 20:
+        food.goto(randint(-300, 300), randint(-300, 300))
+        # добавлем тело если змейка сьела еду
+        snake_segment = turtle.Turtle()
+        snake_segment.shape('square')
+        snake_segment.color('#78004D')
+        snake_segment.penup()
+        snake.append(snake_segment)
+        
+    # команды для перемещения тела
+    for i in range(len(snake)-1, 0, -1):
+        x = snake[i-1].xcor()   # достает координату х прошлого туловища
+        y = snake[i-1].ycor()
+        snake[i].goto(x, y)
+        
     # скорость гловы змейки
-    snake[0].forward(1)
+    snake[0].forward(15)
     
     # обновляет экран
     screen.update()
     
     # упраляет FPS
-    time.sleep(0)
+    time.sleep(0.05)
