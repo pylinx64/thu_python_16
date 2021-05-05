@@ -42,6 +42,14 @@ screen.onkeypress(lambda: snake[0].setheading(0), 'Right')
 screen.listen()
 #--------------------------управление----------------------------
 
+#-------------------------рекорд----------------------------------
+score = 0
+score_pen = turtle.Turtle()
+score_pen.penup()
+score_pen.goto(-300, 300)
+#-------------------------рекорд----------------------------------
+
+FLAG = False
 #--------------------------игра----------------------------------
 while True:
     # проверка сьела ли змея еду
@@ -53,7 +61,12 @@ while True:
         snake_segment.color('#78004D')
         snake_segment.penup()
         snake.append(snake_segment)
-        
+        # обновляем рекорд если голова коснулась яблока
+        score = score + 1
+    
+    score_pen.clear()
+    score_pen.write(score,  align= 'center', font=('Arial', 15)) 
+    
     # команды для перемещения тела
     for i in range(len(snake)-1, 0, -1):
         x = snake[i-1].xcor()   # достает координату х прошлого туловища
@@ -66,5 +79,49 @@ while True:
     # обновляет экран
     screen.update()
     
+    # узнали координаты головы
+    x_head = snake[0].xcor()
+    y_head = snake[0].ycor()
+    
+    x_head = int(x_head)
+    y_head = int(y_head)
+    print(x_head, y_head)
+    
+    # проверка вышла ли голова за правый крайний угол
+    if x_head > 300:
+        # текст (текст, шрифт, размер)
+        turtle.write('GAME OVER', font=('Arial', 20))
+        break
+    
+    if x_head < -300:
+        # команда которая меняет цвет фона
+        turtle.write('GAME OVER', font=('Arial', 20))
+        break
+    
+    if y_head > 300:
+        turtle.write('GAME OVER', font=('Arial', 20))
+        break 
+    
+    if y_head < -300:
+        turtle.write('GAME OVER', font=('Arial', 20))
+        break
+        
+    # мы будем программировать здесь=================================
+    # проверка кушает ли себя змея
+    # перебираем все туловища
+    for i in snake[1:]:
+        # достаем коорлинаты туловища
+        coords = i.position()
+        # если голова коснулась туловища
+        if snake[0].distance(coords) < 10:
+            FLAG = True
+    
+    # проверка флажка
+    if FLAG == True:
+        turtle.write('GAME OVER', font=('Arial', 20))
+        break
+    
     # упраляет FPS
     time.sleep(0.05)
+
+time.sleep(3)
